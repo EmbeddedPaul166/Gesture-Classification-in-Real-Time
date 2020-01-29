@@ -6,6 +6,8 @@ This is an application written in Python and C++, utilizing OpenCV, TensorFlow a
 <img src="https://github.com/EmbeddedPaul166/Gesture-Classification-in-Real-Time/blob/master/images/example_output/fist.png" height="180" width="320">
 <img src="https://github.com/EmbeddedPaul166/Gesture-Classification-in-Real-Time/blob/master/images/example_output/thumbup.png" height="180" width="320">
 
+Screenshots were done via SSH.
+
 ### Hardware components:
 - Antmicro TX2/TX2i Deep Learning Kit
 
@@ -46,7 +48,7 @@ Steps 1, 2, 8 and 9 are done in Python. Steps 3, 4, 5, 6, 7 are done in C++ via 
 11. Dense layer, 5 neurons, Softmax activation
 
 ### Benchmarking
-Framerate fluctuates between 8-12 FPS. Sometimes, depending on the system load it may drop lower for a second.
+Framerate fluctuates between 13-20 FPS when using external HDMI display and 8-12 FPS when using SSH with X-server. 
 Convolutional neural network was trained on a custom dataset of 20000 black and white 45x45 images with split of 70% 15% 15% for training, validation and test data. It achieved 96% accuracy on test dataset.
 ### Running
 Before running you'll need to compile C++ dynamic library. To do that change directory to cpp_cuda and input:
