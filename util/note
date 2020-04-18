@@ -1,0 +1,2 @@
+I encountered some issues with protobuf.
+I was able to resolve the issues by installing protobuf using this script and manually copying protobuf directory from /usr/local/lib/python3.6/dist-packages/protobuf-3.11.3-py3.6-linux-aarch64.egg/google to /usr/local/lib/python3.6/dist-packages/google . Without it I couldn't run any imports with "google.protobuf".

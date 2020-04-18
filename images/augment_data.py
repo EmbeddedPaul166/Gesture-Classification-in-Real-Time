@@ -6,12 +6,11 @@ import random
 # Procedure for data augmentation of training data:
 #
 # 1. Load normal image
-# 2. Perform gaussian blur to reduce details
-# 3. Mirror-flip it
-# 4. Downscale it multiple times and paste it onto the blank background with multiple translations per size
-# 5. Add random backgrounds to loaded image and generated images
-# 6. Write all the images
-# 7. Repeat for another image
+# 2. Mirror-flip it
+# 3. Downscale it multiple times and paste it onto the blank background with multiple translations per size
+# 4. Add random backgrounds to loaded image and generated images
+# 5. Write all the images
+# 6. Repeat for another image
 #
 # Procedure for test and validation data:
 #
@@ -19,7 +18,8 @@ import random
 # 2. Mirror-flip it
 # 3. Write all generated images
 # 4. Repeat for another image
-
+#
+#Also for "none" training dir, there are rotated gestures, so that the net will only recognize one that are vertical
 
 #Image dimensions
 IMAGE_DIM = (150, 150, 1)

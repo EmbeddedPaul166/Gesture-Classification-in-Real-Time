@@ -68,23 +68,22 @@ def create_dataset(path):
 def create_model():
     model = Sequential()
      
-    model.add(Conv2D(64, (3, 3), activation = "relu", padding = "valid", input_shape = INPUT_SHAPE))
+    model.add(Conv2D(48, (3, 3), activation = "relu", padding = "valid", input_shape = INPUT_SHAPE))
     model.add(BatchNormalization())
-    model.add(Conv2D(64, (3, 3), activation = "relu", padding = "valid"))
+    model.add(Conv2D(48, (3, 3), activation = "relu", padding = "valid"))
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size = (2, 2), strides = 2))
     
-    model.add(Conv2D(128, (3, 3), activation = "relu", padding = "valid"))
+    model.add(Conv2D(96, (3, 3), activation = "relu", padding = "valid"))
     model.add(BatchNormalization())
-    model.add(Conv2D(128, (3, 3), activation = "relu", padding = "valid"))
+    model.add(Conv2D(96, (3, 3), activation = "relu", padding = "valid"))
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size = (2, 2), strides = 2))
     
     model.add(Flatten())
     
-    model.add(Dense(512, activation = "relu"))
+    model.add(Dense(256, activation = "relu"))
     model.add(BatchNormalization())
-    #model.add(Dropout(0.5))
     
     model.add(Dense(2, activation = "sigmoid"))
     
