@@ -3,6 +3,8 @@ This is a second version of this application. This time it's more computation he
 
 <img src="https://github.com/EmbeddedPaul166/Gesture-Classification-in-Real-Time/blob/master/examples/closed_hand_example.png" height="320" width="320"> <img src="https://github.com/EmbeddedPaul166/Gesture-Classification-in-Real-Time/blob/master/examples/open_hand_example.png" height="320" width="320">
 
+Base dataset is also a part of this repository as well as augmentation script, that produces a lot more data artifically via various techniques.
+
 ### Hardware components:
 - Antmicro TX2/TX2i Deep Learning Kit
 
