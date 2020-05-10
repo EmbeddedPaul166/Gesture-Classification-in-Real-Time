@@ -18,7 +18,8 @@ class VisionHandler():
     __window_size = (150, 150)
     
     def __open_onboard_camera(self):
-        return cv2.VideoCapture("v4l2src device=/dev/video0 ! video/x-raw,format=UYVY,width=" + str(self.__input_dimensions[1]) + ",height=" + str(self.__input_dimensions[0]) + ", framerate=30/1 ! nvvidconv ! video/x-raw(memory:NVMM), format=I420 ! nvvidconv ! video/x-raw,format=(string)BGRx ! videoconvert ! video/x-raw,format=(string)BGR ! appsink sync=0", cv2.CAP_GSTREAMER)
+        #return cv2.VideoCapture("v4l2src device=/dev/video0 ! video/x-raw,format=UYVY,width=" + str(self.__input_dimensions[1]) + ",height=" + str(self.__input_dimensions[0]) + ", framerate=30/1 ! nvvidconv ! video/x-raw(memory:NVMM), format=I420 ! nvvidconv ! video/x-raw,format=(string)BGRx ! videoconvert ! video/x-raw,format=(string)BGR ! appsink sync=0", cv2.CAP_GSTREAMER)
+        return cv2.VideoCapture(0)
      
     def __is_window_closed(self):
         if cv2.getWindowProperty(self.__window_name, 0) < 0:
@@ -65,12 +66,12 @@ class VisionHandler():
             
             #file_name_open = "training_set/open_hand/open_hand"
             #file_name_closed = "training_set/closed_hand/closed_hand"
-            file_name_open = "validation_set/open_hand/open_hand"
-            file_name_closed = "validation_set/closed_hand/closed_hand"
-            #file_name_open = "test_set/open_hand/open_hand"
-            #file_name_closed = "test_set/closed_hand/closed_hand"
-            image_count_open = 801
-            image_count_closed = 801
+            #file_name_open = "validation_set/open_hand/open_hand"
+            #file_name_closed = "validation_set/closed_hand/closed_hand"
+            file_name_open = "test_set/open_hand/open_hand"
+            file_name_closed = "test_set/closed_hand/closed_hand"
+            image_count_open = 1
+            image_count_closed = 1
             
             while True:
                 if self.__is_window_closed():
@@ -84,7 +85,7 @@ class VisionHandler():
                 self.__frame_undistorted = cv2.remap(self.__frame, self.__camera_mapX, self.__camera_mapY, cv2.INTER_LINEAR)
                 self.__frame_resized = cv2.resize(self.__frame_undistorted, (267, 150))
                 self.__frame_gray = cv2.cvtColor(self.__frame_resized[:,58:208], cv2.COLOR_BGR2GRAY)
-                self.__frame_gray = cv2.rotate(self.__frame_gray, cv2.ROTATE_90_CLOCKWISE)
+                #self.__frame_gray = cv2.rotate(self.__frame_gray, cv2.ROTATE_90_CLOCKWISE)
                 cv2.imshow(self.__window_name, self.__frame_gray)
                 
                 key = cv2.waitKey(1)
