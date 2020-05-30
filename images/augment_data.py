@@ -245,6 +245,7 @@ def augment_data(path_o, path_c, mode, count):
             count_c += 1
 
 def augment_none_class(count):
+    os.mkdir("training_set/none/")
     black = np.zeros((IMAGE_DIM))
     for i in range(count, 20001):
         im = black.copy()

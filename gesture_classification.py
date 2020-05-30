@@ -19,12 +19,10 @@ class VisionHandler():
     __output_frame = None
     __input_dimensions = (1080, 1920) 
     __window_size = (480, 480)
-    __model = tf.saved_model.load("cnn/trt_cnn_model.pb")
-    __graph_func = __model.signatures["serving_default"]
-    __frozen_graph = convert_to_constants.convert_variables_to_constants_v2(__graph_func)
+    __model = load_model("cnn/cnn_model.h5")
     
     def __open_onboard_camera(self):
-        return cv2.VideoCapture("v4l2src device=/dev/video0 ! video/x-raw,format=UYVY,width=" + str(self.__input_dimensions[1]) + ",height=" + str(self.__input_dimensions[0]) + ", framerate=30/1 ! nvvidconv ! video/x-raw(memory:NVMM), format=I420 ! nvvidconv ! video/x-raw,format=(string)BGRx ! videoconvert ! video/x-raw,format=(string)BGR ! appsink sync=0", cv2.CAP_GSTREAMER)
+        return cv2.VideoCapture(0)
      
     def __is_window_closed(self):
         if cv2.getWindowProperty(self.__window_name, 0) < 0:
@@ -63,7 +61,7 @@ class VisionHandler():
         frame_for_prediction = cv2.normalize(self.__frame_gray.astype(np.float32), None, 0, 1, cv2.NORM_MINMAX)
         frame_for_prediction = frame_for_prediction.reshape(1, 150, 150, 1)
         frame_for_prediction = tf.convert_to_tensor(frame_for_prediction)
-        prediction_list = self.__frozen_graph(frame_for_prediction)[0].numpy()
+        prediction_list = self.__model.predict(frame_for_prediction)
         print(prediction_list)
         cv2.putText(self.__frame_gray, "Closed hand " + str(prediction_list.item(0)*100) + "%", (5, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 255, 0), 1, cv2.LINE_AA)
         cv2.putText(self.__frame_gray, "Open hand " + str(prediction_list.item(1)*100) + "%", (5, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 255, 0), 1, cv2.LINE_AA)
