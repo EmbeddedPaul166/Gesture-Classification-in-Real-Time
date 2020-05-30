@@ -15,10 +15,9 @@ class VisionHandler():
     __frame_blurred = None
     __frame_rect = None
     __input_dimensions = (1080, 1920) 
-    __window_size = (150, 150)
+    __window_size = (500, 500)
     
     def __open_onboard_camera(self):
-        #return cv2.VideoCapture("v4l2src device=/dev/video0 ! video/x-raw,format=UYVY,width=" + str(self.__input_dimensions[1]) + ",height=" + str(self.__input_dimensions[0]) + ", framerate=30/1 ! nvvidconv ! video/x-raw(memory:NVMM), format=I420 ! nvvidconv ! video/x-raw,format=(string)BGRx ! videoconvert ! video/x-raw,format=(string)BGR ! appsink sync=0", cv2.CAP_GSTREAMER)
         return cv2.VideoCapture(0)
      
     def __is_window_closed(self):
@@ -66,12 +65,14 @@ class VisionHandler():
             
             #file_name_open = "training_set/open_hand/open_hand"
             #file_name_closed = "training_set/closed_hand/closed_hand"
-            #file_name_open = "validation_set/open_hand/open_hand"
-            #file_name_closed = "validation_set/closed_hand/closed_hand"
-            file_name_open = "test_set/open_hand/open_hand"
-            file_name_closed = "test_set/closed_hand/closed_hand"
-            image_count_open = 1
-            image_count_closed = 1
+            #file_name_none = "training_set/none/none"
+            file_name_open = "validation_set/open_hand/open_hand"
+            file_name_closed = "validation_set/closed_hand/closed_hand"
+            #file_name_open = "test_set/open_hand/open_hand"
+            #file_name_closed = "test_set/closed_hand/closed_hand"
+            image_count_open = 1601
+            image_count_closed = 1601
+            #image_count_none = 1
             
             while True:
                 if self.__is_window_closed():
@@ -92,7 +93,6 @@ class VisionHandler():
                 
                 if key == ord("q"):
                     break
-                
                 if key == ord("o"):
                     print("Saving image open hand ", image_count_open)
                     cv2.imwrite("%s%d.jpg"%(file_name_open, image_count_open), self.__frame_gray)
@@ -102,6 +102,10 @@ class VisionHandler():
                     print("Saving image closed hand", image_count_closed)
                     cv2.imwrite("%s%d.jpg"%(file_name_closed, image_count_closed), self.__frame_gray)
                     image_count_closed+=1
+                #if key == ord("n"):
+                #    print("Saving image none", image_count_none)
+                #    cv2.imwrite("%s%d.jpg"%(file_name_none, image_count_none), self.__frame_gray)
+                #    image_count_none += 1
                 
             video_capture.release()
             

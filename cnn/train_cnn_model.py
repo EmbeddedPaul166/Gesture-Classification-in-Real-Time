@@ -22,7 +22,7 @@ IMAGE_SIZE = (150, 150)
 IS_VERBOSE = 1
 BATCH_SIZE = 32
 NUMBER_OF_EPOCHS = 10000
-STEPS_PER_EPOCH = 5200
+STEPS_PER_EPOCH = 2000
 VALIDATION_STEPS = 200
 TEST_STEPS = 150
 CLASS_NAMES = np.array(["closed_hand", "open_hand", "none"])
@@ -73,9 +73,9 @@ def create_dataset(path):
 def create_model():
     model = Sequential()
      
-    model.add(Conv2D(48, (3, 3), activation = "relu", padding = "same", input_shape = INPUT_SHAPE))
+    model.add(Conv2D(64, (3, 3), activation = "relu", padding = "same", input_shape = INPUT_SHAPE))
     model.add(BatchNormalization())
-    model.add(Conv2D(48, (3, 3), activation = "relu", padding = "same"))
+    model.add(Conv2D(64, (3, 3), activation = "relu", padding = "same"))
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size = (2, 2)))
     
@@ -85,21 +85,27 @@ def create_model():
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size = (2, 2)))
     
-    model.add(Conv2D(96, (3, 3), activation = "relu", padding = "same"))
+    model.add(Conv2D(128, (3, 3), activation = "relu", padding = "same"))
     model.add(BatchNormalization())
-    model.add(Conv2D(96, (3, 3), activation = "relu", padding = "same"))
+    model.add(Conv2D(128, (3, 3), activation = "relu", padding = "same"))
+    model.add(BatchNormalization())
+    model.add(MaxPool2D(pool_size = (2, 2)))
+    
+    model.add(Conv2D(128, (3, 3), activation = "relu", padding = "same"))
+    model.add(BatchNormalization())
+    model.add(Conv2D(128, (3, 3), activation = "relu", padding = "same"))
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size = (2, 2)))
     
     model.add(Flatten())
     
-    model.add(Dense(256, activation = "relu"))
+    model.add(Dense(512, activation = "relu"))
     model.add(BatchNormalization())
     model.add(Dropout(0.5))
     
     model.add(Dense(3, activation = "softmax"))
     
-    model.compile(optimizer = Adam(learning_rate = 0.001), loss = "categorical_crossentropy", metrics = ["accuracy"])
+    model.compile(optimizer = Adam(learning_rate = 0.01), loss = "categorical_crossentropy", metrics = ["accuracy"])
     
     return model
 

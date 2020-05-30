@@ -4,6 +4,7 @@ import time
 from tensorflow.keras.models import load_model
 from tensorflow.python.framework import convert_to_constants 
 import tensorflow as tf
+import argparse
 
 gpu = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(gpu[0], True)
@@ -18,8 +19,12 @@ class VisionHandler():
     __frame_gray = None
     __output_frame = None
     __input_dimensions = (1080, 1920) 
-    __window_size = (480, 480)
+    __window_size = (600, 600)
     __model = load_model("cnn/cnn_model.h5")
+    __no_calib = False
+    
+    def __init__(self, no_calib):
+        self.__no_calib = no_calib
     
     def __open_onboard_camera(self):
         return cv2.VideoCapture(0)
@@ -63,8 +68,10 @@ class VisionHandler():
         frame_for_prediction = tf.convert_to_tensor(frame_for_prediction)
         prediction_list = self.__model.predict(frame_for_prediction)
         print(prediction_list)
-        cv2.putText(self.__frame_gray, "Closed hand " + str(prediction_list.item(0)*100) + "%", (5, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 255, 0), 1, cv2.LINE_AA)
-        cv2.putText(self.__frame_gray, "Open hand " + str(prediction_list.item(1)*100) + "%", (5, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 255, 0), 1, cv2.LINE_AA)
+        if prediction_list.item(0) > 0.98:
+            cv2.putText(self.__frame_gray, "Closed hand", (5, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 255, 0), 1, cv2.LINE_AA)
+        if prediction_list.item(1) > 0.98:
+            cv2.putText(self.__frame_gray, "Open hand", (5, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 255, 0), 1, cv2.LINE_AA)
     
     def read_cameras(self):
         video_capture = self.__open_onboard_camera()
@@ -89,7 +96,11 @@ class VisionHandler():
                 if return_value == False:
                     break
                 
-                self.__frame_undistorted = cv2.remap(self.__frame, self.__camera_mapX, self.__camera_mapY, cv2.INTER_LINEAR)
+                if self.__no_calib == False:
+                    self.__frame_undistorted = cv2.remap(self.__frame, self.__camera_mapX, self.__camera_mapY, cv2.INTER_LINEAR)
+                else:
+                    self.__frame_undistorted = self.__frame
+                    
                 self.__frame_resized = cv2.resize(self.__frame_undistorted, (267, 150))
                 self.__frame_gray = cv2.cvtColor(self.__frame_resized[:,58:208], cv2.COLOR_BGR2GRAY)
                 
@@ -118,7 +129,13 @@ class VisionHandler():
             print("Failed to open cameras")
 
 if __name__ == "__main__": 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--nocalib", action="store_true")
+    args = parser.parse_args()
     print("Gesture Detection and Classification in Real-Time\n")
     print("OpenCV version: {}".format(cv2.__version__))
-    vision_handler = VisionHandler()
+    if args.nocalib:
+        vision_handler = VisionHandler(True)
+    else:
+        vision_handler = VisionHandler(False)
     vision_handler.read_cameras()
