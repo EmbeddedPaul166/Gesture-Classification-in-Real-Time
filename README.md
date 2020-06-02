@@ -21,7 +21,7 @@ Otherwise upload your own cameraCalibResults.npz and run normally. My other app,
 - TensorRT 6.0.1
 
 ### Data augmentation
-Training set was augmented with various techniques. Base pictures were taken on a black background so that it was possible to use thresholding on numpy arrays to easily segment out gestures and their backgrounds. After that many random solid color backgrounds were generated and gestures were downscaled, randomly stretched and planted in various translations in the frames. Some images were darkened randomly, to fit different lighting conditions. Apart from that all images were flipped mirror-like and random noise was added, varying in density.
+Training set was augmented with various techniques. Base pictures were taken on a black background so that it was possible to use thresholding on numpy arrays to easily segment out gestures and their backgrounds. After that many random solid color backgrounds were generated and gestures were downscaled, randomly stretched and planted in various translations in the frames. Some images were darkened randomly, to fit different lighting conditions. Apart from that all images were flipped mirror-like and random noise was added, varying in density. For more information see: https://github.com/EmbeddedPaul166/Gesture-Classification-in-Real-Time/blob/master/images/augment_data.py
 
 ### Algorithm steps
 1. Download frame from camera.
