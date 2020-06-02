@@ -9,9 +9,9 @@ input_saved_model_dir = "tf_model.pb"
 num_runs = 50
 
 def my_input_fn():
-    for i in range(num_runs):
+    for _ in range(num_runs):
         inp = np.random.normal(size=(150, 150, 1)).astype(np.float32)
-        yield inp
+        yield [inp]
 
 model = load_model("cnn_model.h5")
 model.save(input_saved_model_dir, save_format="tf")
@@ -23,6 +23,4 @@ conversion_params = conversion_params._replace(maximum_cached_engines=100)
 
 converter = trt.TrtGraphConverterV2(input_saved_model_dir = input_saved_model_dir, conversion_params = conversion_params)
 converter.convert()
-#converter.save(output_saved_model_dir)
-converter.build(input_fn=my_input_fn)
 converter.save(output_saved_model_dir)
