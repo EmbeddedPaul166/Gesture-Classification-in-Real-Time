@@ -91,7 +91,11 @@ class VisionHandler():
                 if return_value == False:
                     break
                 
-                self.__frame_undistorted = cv2.remap(self.__frame, self.__camera_mapX, self.__camera_mapY, cv2.INTER_LINEAR)
+                if self.__no_calib == False:
+                    self.__frame_undistorted = cv2.remap(self.__frame, self.__camera_mapX, self.__camera_mapY, cv2.INTER_LINEAR)
+                else:
+                    self.__frame_undistorted = self.__frame
+                
                 self.__frame_resized = cv2.resize(self.__frame_undistorted, (267, 150))
                 self.__frame_gray = cv2.cvtColor(self.__frame_resized[:,58:208], cv2.COLOR_BGR2GRAY)
                 
@@ -120,7 +124,13 @@ class VisionHandler():
             print("Failed to open cameras")
 
 if __name__ == "__main__": 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--nocalib", action="store_true")
+    args = parser.parse_args()
     print("Gesture Detection and Classification in Real-Time\n")
     print("OpenCV version: {}".format(cv2.__version__))
-    vision_handler = VisionHandler()
+    if args.nocalib:
+        vision_handler = VisionHandler(True)
+    else:
+        vision_handler = VisionHandler(False)
     vision_handler.read_cameras()
